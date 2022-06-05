@@ -1,4 +1,5 @@
 import 'package:absensi/login.dart';
+import 'package:absensi/mainpage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: 'Flutter Demo',
-      home: loginPage(),
+      home: mainPage(),
     );
   }
 }

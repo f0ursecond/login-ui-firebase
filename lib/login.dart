@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -13,28 +15,44 @@ class loginPage extends StatefulWidget {
 
 class _loginPageState extends State<loginPage> {
   //controller
-  final _niscontroller = TextEditingController();
+  final _emailcontroller = TextEditingController();
   final _passcontroller = TextEditingController();
-  final _kelascontroller = TextEditingController();
 
-  String? _valKelas;
-  final items = ['X AKL 1', 'X AKL 2', 'X AKL 3'];
+  Future signIn() async {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: _emailcontroller.text.trim(),
+      password: _passcontroller.text.trim(),
+    );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _emailcontroller.dispose();
+    _passcontroller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFffffff),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(top: 125.0, left: 10.0, right: 10.0),
+          padding: const EdgeInsets.only(top: 85.0, left: 10.0, right: 10.0),
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Center(
-                  child: Lottie.asset('assets/animations/coding.json'),
+                  // child: Lottie.asset('assets/animations/coding.json'),
+                  child: Container(
+                      width: 300.0,
+                      height: 300.0,
+                      child: Image.asset('assets/images/logosmk.jpg')),
                 ),
                 const SizedBox(
-                  height: 5.0,
+                  height: 50.0,
                 ),
 
                 // Textfield Nis
@@ -49,13 +67,13 @@ class _loginPageState extends State<loginPage> {
                     height: 50.0,
                     width: double.infinity,
                     child: TextField(
-                      controller: _niscontroller,
-                      keyboardType: TextInputType.number,
+                      controller: _emailcontroller,
+                      keyboardType: TextInputType.emailAddress,
                       decoration: const InputDecoration(
                         border: InputBorder.none,
-                        hintText: 'Nomor Induk Siswa',
+                        hintText: 'Email',
                         prefixIcon: Icon(
-                          Ionicons.school_outline,
+                          Ionicons.mail_open_outline,
                           size: 25,
                           color: Colors.black,
                         ),
@@ -126,7 +144,7 @@ class _loginPageState extends State<loginPage> {
                     width: 150.0,
                     child: Center(
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: signIn,
                         child: const Center(
                           child: Text(
                             'Login',
@@ -137,36 +155,9 @@ class _loginPageState extends State<loginPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 5.0),
-                Padding(
-                  padding: const EdgeInsets.only(top: 140.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Don\'t Have an account? ',
-                        style: TextStyle(color: Colors.grey[500]),
-                      ),
-                      TextButton(
-                          onPressed: () {},
-                          child: const Text(
-                            'Register',
-                            style: TextStyle(color: Colors.black),
-                          )),
-                    ],
-                  ),
-                )
               ]),
         ),
       ),
     );
   }
-
-  DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
-        value: item,
-        child: Text(
-          item,
-          style: TextStyle(fontSize: 15.0),
-        ),
-      );
 }
