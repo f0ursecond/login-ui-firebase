@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "755029901867",
+    "project_id": "absensi-c4bad",
+    "storage_bucket": "absensi-c4bad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:755029901867:android:fb145aa7dbfa5b484fa06e",
+        "android_client_info": {
+          "package_name": "com.example.absensi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "755029901867-11hgok96rl060ou447njr7lt38mttkfn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABJksaJmOEHQ0fJi8LL03SG1kTA-Enn6Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "755029901867-11hgok96rl060ou447njr7lt38mttkfn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
