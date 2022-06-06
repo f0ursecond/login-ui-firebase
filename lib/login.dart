@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,15 +16,23 @@ class loginPage extends StatefulWidget {
 }
 
 class _loginPageState extends State<loginPage> {
-  //controller
+  // KONTOLER
+
   final _emailcontroller = TextEditingController();
   final _passcontroller = TextEditingController();
+  final GlobalKey<FormState> _key = GlobalKey<FormState>();
+  bool isLoading = false;
 
   Future signIn() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: _emailcontroller.text.trim(),
-      password: _passcontroller.text.trim(),
-    );
+    setState(() => isLoading = true);
+    if (_key.currentState!.validate()) {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailcontroller.text.trim(),
+        password: _passcontroller.text.trim(),
+      );
+    } else {
+      setState(() => isLoading = false);
+    }
   }
 
   @override
@@ -37,42 +47,45 @@ class _loginPageState extends State<loginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFffffff),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 85.0, left: 10.0, right: 10.0),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Center(
-                  // child: Lottie.asset('assets/animations/coding.json'),
-                  child: Container(
-                      width: 300.0,
-                      height: 300.0,
-                      child: Image.asset('assets/images/logosmk.jpg')),
-                ),
-                const SizedBox(
-                  height: 50.0,
-                ),
-
-                // Textfield Nis
-
-                Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.grey[200],
-                    ),
+      body: Form(
+        key: _key,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 85.0, left: 10.0, right: 10.0),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Center(
+                    // child: Lottie.asset('assets/animations/coding.json'),
+                    child: Container(
+                        width: 300.0,
+                        height: 300.0,
+                        child: Image.asset('assets/images/logosmk.jpg')),
+                  ),
+                  const SizedBox(
                     height: 50.0,
-                    width: double.infinity,
-                    child: TextField(
+                  ),
+
+                  // Textfield Nis
+
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: TextFormField(
+                      validator: validateEmail,
                       controller: _emailcontroller,
                       keyboardType: TextInputType.emailAddress,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
+                      decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                          borderSide: const BorderSide(
+                              color: Color.fromARGB(255, 5, 5, 5), width: 2.0),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
                         hintText: 'Email',
-                        prefixIcon: Icon(
+                        prefixIcon: const Icon(
                           Ionicons.mail_open_outline,
                           size: 25,
                           color: Colors.black,
@@ -80,30 +93,29 @@ class _loginPageState extends State<loginPage> {
                       ),
                     ),
                   ),
-                ),
 
-                // TextField Password
+                  // TextField Password
 
-                Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.grey[200],
-                    ),
-                    height: 50.0,
-                    width: double.infinity,
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
                     child: TextField(
                       controller: _passcontroller,
                       obscureText: true,
                       keyboardType: TextInputType.visiblePassword,
-                      decoration: const InputDecoration(
-                        suffixIcon: Icon(
+                      decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                          borderSide: const BorderSide(
+                              color: Color.fromARGB(255, 5, 5, 5), width: 2.0),
+                        ),
+                        suffixIcon: const Icon(
                           Feather.eye_off,
                           color: Colors.black,
                           size: 25,
                         ),
-                        border: InputBorder.none,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
                         hintText: 'Password',
                         prefixIcon: Icon(
                           Feather.lock,
@@ -113,51 +125,67 @@ class _loginPageState extends State<loginPage> {
                       ),
                     ),
                   ),
-                ),
 
-                Padding(
-                  padding: const EdgeInsets.only(
-                      right: 10.0, left: 10.0, bottom: 10.0, top: 5.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          'Forgot Password ?',
-                          style: TextStyle(color: Colors.black),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        right: 10.0, left: 10.0, bottom: 10.0, top: 5.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                          onPressed: () {},
+                          child: const Text(
+                            'Forgot Password ?',
+                            style: TextStyle(color: Colors.black),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // BUTTON
-                Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.black,
+                      ],
                     ),
-                    height: 50.0,
-                    width: 150.0,
-                    child: Center(
-                      child: TextButton(
-                        onPressed: signIn,
-                        child: const Center(
-                          child: Text(
-                            'Login',
-                            style: TextStyle(color: Colors.white),
+                  ),
+
+                  // BUTTON
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.black,
+                      ),
+                      height: 50.0,
+                      width: 150.0,
+                      child: Center(
+                        child: TextButton(
+                          onPressed: signIn,
+                          child: Center(
+                            child: isLoading
+                                ? const SizedBox(
+                                    height: 20.0,
+                                    width: 20.0,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                : const Text(
+                                    'Login',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ]),
+                ]),
+          ),
         ),
       ),
     );
+  }
+}
+
+String? validateEmail(String? formEmail) {
+  if (formEmail == null || formEmail.isEmpty) {
+    return 'Email e di isi sek cok';
+
+    return null;
   }
 }
