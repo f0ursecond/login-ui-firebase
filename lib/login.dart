@@ -22,6 +22,7 @@ class _loginPageState extends State<loginPage> {
   final _passcontroller = TextEditingController();
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   bool isLoading = false;
+  bool obsecureText = false;
 
   Future signIn() async {
     setState(() => isLoading = true);
@@ -100,7 +101,7 @@ class _loginPageState extends State<loginPage> {
                     padding: const EdgeInsets.all(10.0),
                     child: TextField(
                       controller: _passcontroller,
-                      obscureText: true,
+                      obscureText: obsecureText,
                       keyboardType: TextInputType.visiblePassword,
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
@@ -108,16 +109,27 @@ class _loginPageState extends State<loginPage> {
                           borderSide: const BorderSide(
                               color: Color.fromARGB(255, 5, 5, 5), width: 2.0),
                         ),
-                        suffixIcon: const Icon(
-                          Feather.eye_off,
-                          color: Colors.black,
-                          size: 25,
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              obsecureText = !obsecureText;
+                            });
+                          },
+                          icon: obsecureText
+                              ? const Icon(
+                                  Feather.eye_off,
+                                  color: Colors.black,
+                                )
+                              : const Icon(
+                                  Feather.eye,
+                                  color: Colors.black,
+                                ),
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15.0),
                         ),
                         hintText: 'Password',
-                        prefixIcon: Icon(
+                        prefixIcon: const Icon(
                           Feather.lock,
                           size: 24,
                           color: Colors.black,
