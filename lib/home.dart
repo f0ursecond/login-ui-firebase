@@ -29,8 +29,8 @@ class _homepageState extends State<homepage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Masuk sebagai : ' + user.email!,
-              style: TextStyle(fontSize: 15.0),
+              'Masuk sebagai : ${user.email!}',
+              style: const TextStyle(fontSize: 15.0),
             ),
             const Padding(
               padding: EdgeInsets.all(
@@ -57,7 +57,7 @@ class _homepageState extends State<homepage> {
                             isLoading = true;
                           });
 
-                          Future.delayed(Duration(seconds: 3), () {
+                          Future.delayed(const Duration(seconds: 3), () {
                             setState(() {
                               isLoading = false;
                               FirebaseAuth.instance.signOut();

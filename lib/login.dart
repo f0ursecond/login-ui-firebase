@@ -23,16 +23,53 @@ class _loginPageState extends State<loginPage> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   bool isLoading = false;
   bool obsecureText = false;
+  String errorMessage = '';
 
   Future signIn() async {
-    setState(() => isLoading = true);
-    if (_key.currentState!.validate()) {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailcontroller.text.trim(),
-        password: _passcontroller.text.trim(),
-      );
-    } else {
-      setState(() => isLoading = false);
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      if (_key.currentState!.validate()) {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _emailcontroller.text.trim(),
+          password: _passcontroller.text.trim(),
+        );
+        errorMessage = '';
+      } else {
+        setState(() {
+          Future.delayed(Duration(seconds: 1), () {
+            setState(() {
+              isLoading = false;
+            });
+          });
+        });
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'wrong-password') {
+        Future.delayed(Duration(seconds: 1), () {
+          setState(() {
+            isLoading = false;
+          });
+        });
+        return showDialog(
+            context: context,
+            builder: (context) {
+              return Center(
+                child: Container(
+                  height: 50.0,
+                  width: 200.0,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Center(
+                    child: Text('Mohon Maaf Password Anda Salah'),
+                  ),
+                ),
+              );
+            });
+      }
     }
   }
 
@@ -99,7 +136,8 @@ class _loginPageState extends State<loginPage> {
 
                   Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: TextField(
+                    child: TextFormField(
+                      validator: validatePassword,
                       controller: _passcontroller,
                       obscureText: obsecureText,
                       keyboardType: TextInputType.visiblePassword,
@@ -199,5 +237,15 @@ String? validateEmail(String? formEmail) {
     return 'Email e di isi sek cok';
 
     return null;
+  }
+}
+
+String? validatePassword(String? formPassword) {
+  if (formPassword == null || formPassword.isEmpty) {
+    return 'password e di isi sek cok';
+    return null;
+    // } else if (formPassword == 'wrong-password') {
+    //   return 'password e seng bener cok';
+    //   return null;
   }
 }
