@@ -25,65 +25,66 @@ class _homepageState extends State<homepage> {
     return Scaffold(
       body: SafeArea(
         child: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Masuk sebagai : ${user.email!}',
-              style: const TextStyle(fontSize: 15.0),
-            ),
-            const Padding(
-              padding: EdgeInsets.all(
-                10.0,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Masuk sebagai : ${user.email!}',
+                style: const TextStyle(fontSize: 15.0),
               ),
-              child: Divider(color: Colors.black),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: Colors.black,
-                    ),
-                    width: 250.0,
-                    height: 50.0,
-                    child: Center(
-                      child: TextButton(
-                        onPressed: (() {
-                          setState(() {
-                            isLoading = true;
-                          });
-
-                          Future.delayed(const Duration(seconds: 3), () {
+              const Padding(
+                padding: EdgeInsets.all(
+                  10.0,
+                ),
+                child: Divider(color: Colors.black),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color: Colors.black,
+                      ),
+                      width: 250.0,
+                      height: 50.0,
+                      child: Center(
+                        child: TextButton(
+                          onPressed: (() {
                             setState(() {
-                              isLoading = false;
-                              FirebaseAuth.instance.signOut();
+                              isLoading = true;
                             });
-                          });
-                        }),
-                        child: isLoading
-                            ? const SizedBox(
-                                height: 20.0,
-                                width: 20.0,
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
+
+                            Future.delayed(const Duration(seconds: 3), () {
+                              setState(() {
+                                isLoading = false;
+                                FirebaseAuth.instance.signOut();
+                              });
+                            });
+                          }),
+                          child: isLoading
+                              ? const SizedBox(
+                                  height: 20.0,
+                                  width: 20.0,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : const Text(
+                                  'Log out',
+                                  style: TextStyle(color: Colors.white),
                                 ),
-                              )
-                            : const Text(
-                                'Log out',
-                                style: TextStyle(color: Colors.white),
-                              ),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            )
-          ],
-        )),
+                ],
+              )
+            ],
+          ),
+        ),
       ),
     );
   }

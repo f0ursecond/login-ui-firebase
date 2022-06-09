@@ -16,8 +16,6 @@ class loginPage extends StatefulWidget {
 }
 
 class _loginPageState extends State<loginPage> {
-  // KONTOLER
-
   final _emailcontroller = TextEditingController();
   final _passcontroller = TextEditingController();
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
@@ -37,38 +35,45 @@ class _loginPageState extends State<loginPage> {
         );
         errorMessage = '';
       } else {
-        setState(() {
-          Future.delayed(Duration(seconds: 1), () {
-            setState(() {
-              isLoading = false;
+        setState(
+          () {
+            Future.delayed(const Duration(seconds: 1), () {
+              setState(() {
+                isLoading = false;
+              });
             });
-          });
-        });
+          },
+        );
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'wrong-password') {
-        Future.delayed(Duration(seconds: 1), () {
-          setState(() {
-            isLoading = false;
-          });
-        });
+        Future.delayed(
+          Duration(seconds: 1),
+          () {
+            setState(
+              () {
+                isLoading = false;
+              },
+            );
+          },
+        );
         return showDialog(
-            context: context,
-            builder: (context) {
-              return Center(
-                child: Container(
-                  height: 50.0,
-                  width: 200.0,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Center(
-                    child: Text('Mohon Maaf Password Anda Salah'),
-                  ),
+          context: context,
+          builder: (context) {
+            return Center(
+              child: Container(
+                height: 50.0,
+                width: 200.0,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
                 ),
-              );
-            });
+                child: const Center(
+                  child: Text('Password Anda Salah'),
+                ),
+              ),
+            );
+          },
+        );
       }
     }
   }
@@ -95,11 +100,7 @@ class _loginPageState extends State<loginPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Center(
-                    // child: Lottie.asset('assets/animations/coding.json'),
-                    child: Container(
-                        width: 300.0,
-                        height: 300.0,
-                        child: Image.asset('assets/images/logosmk.jpg')),
+                    child: Lottie.asset('assets/animations/welcome.json'),
                   ),
                   const SizedBox(
                     height: 50.0,
