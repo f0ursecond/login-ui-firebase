@@ -45,6 +45,8 @@ class _loginPageState extends State<loginPage> {
       print('Failed with error code: ${e.code}');
       print(e.message);
 
+      //ketika salah password
+
       if (e.code == 'wrong-password') {
         Future.delayed(
           const Duration(seconds: 1),
@@ -53,11 +55,15 @@ class _loginPageState extends State<loginPage> {
           },
         );
         return showTopSnackBar(
-            context,
-            const CustomSnackBar.error(
-              message: "Password salah",
-              textStyle: TextStyle(color: Colors.white),
-            ));
+          context,
+          const CustomSnackBar.error(
+            message: "Password salah",
+            textStyle: TextStyle(color: Colors.white),
+          ),
+        );
+
+        //ketika request terlalu banyak
+
       } else if (e.code == 'too-many-requests') {
         Future.delayed(
           const Duration(seconds: 1),
@@ -67,11 +73,30 @@ class _loginPageState extends State<loginPage> {
         );
 
         return showTopSnackBar(
-            context,
-            const CustomSnackBar.error(
-              message: "Login Gagal, Silahkan hubungi Customer Service",
-              textStyle: TextStyle(color: Colors.white),
-            ));
+          context,
+          const CustomSnackBar.error(
+            message: "Login Gagal, Silahkan hubungi petugas",
+            textStyle: TextStyle(color: Colors.white),
+          ),
+        );
+
+        //ketika email tidak terdaftar
+
+      } else if (e.code == 'user-not-found') {
+        Future.delayed(
+          const Duration(seconds: 1),
+          () {
+            setState(() => isLoading = false);
+          },
+        );
+
+        return showTopSnackBar(
+          context,
+          const CustomSnackBar.error(
+            message: "Email anda belum terdaftar, silahkan hubungi petugas",
+            textStyle: TextStyle(color: Colors.white),
+          ),
+        );
       } else {
         setState(() => isLoading = false);
       }
@@ -88,7 +113,7 @@ class _loginPageState extends State<loginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFffffff),
+      backgroundColor: const Color(0xFFffffff),
       body: Form(
         key: _key,
         child: SingleChildScrollView(
@@ -100,7 +125,7 @@ class _loginPageState extends State<loginPage> {
               children: [
                 Center(
                   child: Padding(
-                    padding: const EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.only(right: 10.0),
                     child: Container(
                         height: 400,
                         width: 400,
