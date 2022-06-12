@@ -5,6 +5,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'main.dart';
 import 'package:lottie/lottie.dart';
 
@@ -21,66 +23,63 @@ class _loginPageState extends State<loginPage> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   bool isLoading = false;
   bool obsecureText = false;
-  String errorMessage = '';
 
   Future signIn() async {
     try {
-      setState(() {
-        isLoading = true;
-      });
+      setState(() => isLoading = true);
       if (_key.currentState!.validate()) {
         await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _emailcontroller.text.trim(),
           password: _passcontroller.text.trim(),
         );
-        errorMessage = '';
       } else {
         setState(
           () {
             Future.delayed(const Duration(seconds: 1), () {
-              setState(() {
-                isLoading = false;
-              });
+              setState(() => isLoading = false);
             });
           },
         );
       }
     } on FirebaseAuthException catch (e) {
+      print('Failed with error code: ${e.code}');
+      print(e.message);
+
       if (e.code == 'wrong-password') {
         Future.delayed(
-          Duration(seconds: 1),
+          const Duration(seconds: 1),
           () {
-            setState(
-              () {
-                isLoading = false;
-              },
-            );
+            setState(() => isLoading = false);
           },
         );
-        return showDialog(
-          context: context,
-          builder: (context) {
-            return Center(
-              child: Container(
-                height: 50.0,
-                width: 200.0,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                ),
-                child: const Center(
-                  child: Text('Password Anda Salah'),
-                ),
-              ),
-            );
+        return showTopSnackBar(
+            context,
+            const CustomSnackBar.error(
+              message: "Password salah",
+              textStyle: TextStyle(color: Colors.white),
+            ));
+      } else if (e.code == 'too-many-requests') {
+        Future.delayed(
+          const Duration(seconds: 1),
+          () {
+            setState(() => isLoading = false);
           },
         );
+
+        return showTopSnackBar(
+            context,
+            const CustomSnackBar.error(
+              message: "Login Gagal, Silahkan hubungi Customer Service",
+              textStyle: TextStyle(color: Colors.white),
+            ));
+      } else {
+        setState(() => isLoading = false);
       }
     }
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _emailcontroller.dispose();
     _passcontroller.dispose();
     super.dispose();
@@ -94,138 +93,145 @@ class _loginPageState extends State<loginPage> {
         key: _key,
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.only(top: 85.0, left: 10.0, right: 10.0),
+            padding: const EdgeInsets.only(top: 20.0, left: 10.0, right: 10.0),
             child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Center(
-                    child: Lottie.asset('assets/animations/welcome.json'),
-                  ),
-                  const SizedBox(
-                    height: 50.0,
-                  ),
-
-                  // Textfield Nis
-
-                  Padding(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Center(
+                  child: Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: TextFormField(
-                      validator: validateEmail,
-                      controller: _emailcontroller,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                          borderSide: const BorderSide(
-                              color: Color.fromARGB(255, 5, 5, 5), width: 2.0),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        hintText: 'Email',
-                        prefixIcon: const Icon(
-                          Ionicons.mail_open_outline,
-                          size: 25,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  // TextField Password
-
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: TextFormField(
-                      validator: validatePassword,
-                      controller: _passcontroller,
-                      obscureText: obsecureText,
-                      keyboardType: TextInputType.visiblePassword,
-                      decoration: InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                          borderSide: const BorderSide(
-                              color: Color.fromARGB(255, 5, 5, 5), width: 2.0),
-                        ),
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              obsecureText = !obsecureText;
-                            });
-                          },
-                          icon: obsecureText
-                              ? const Icon(
-                                  Feather.eye_off,
-                                  color: Colors.black,
-                                )
-                              : const Icon(
-                                  Feather.eye,
-                                  color: Colors.black,
-                                ),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        hintText: 'Password',
-                        prefixIcon: const Icon(
-                          Feather.lock,
-                          size: 24,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        right: 10.0, left: 10.0, bottom: 10.0, top: 5.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        TextButton(
-                          onPressed: () {},
-                          child: const Text(
-                            'Forgot Password ?',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  // BUTTON
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
                     child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
+                        height: 400,
+                        width: 400,
+                        child: Lottie.asset('assets/animations/welcome.json')),
+                  ),
+                ),
+                const SizedBox(
+                  height: 50.0,
+                ),
+
+                // Textfield Nis
+
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: TextFormField(
+                    validator: validateEmail,
+                    controller: _emailcontroller,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 5, 5, 5), width: 2.0),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      hintText: 'Email',
+                      prefixIcon: const Icon(
+                        Ionicons.mail_open_outline,
+                        size: 25,
                         color: Colors.black,
                       ),
-                      height: 50.0,
-                      width: 150.0,
-                      child: Center(
-                        child: TextButton(
-                          onPressed: signIn,
-                          child: Center(
-                            child: isLoading
-                                ? const SizedBox(
-                                    height: 20.0,
-                                    width: 20.0,
-                                    child: CircularProgressIndicator(
-                                      color: Colors.white,
-                                    ),
-                                  )
-                                : const Text(
-                                    'Login',
-                                    style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+
+                // TextField Password
+
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: TextFormField(
+                    validator: validatePassword,
+                    controller: _passcontroller,
+                    obscureText: obsecureText,
+                    keyboardType: TextInputType.visiblePassword,
+                    decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 5, 5, 5), width: 2.0),
+                      ),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            obsecureText = !obsecureText;
+                          });
+                        },
+                        icon: obsecureText
+                            ? const Icon(
+                                Feather.eye_off,
+                                color: Colors.black,
+                              )
+                            : const Icon(
+                                Feather.eye,
+                                color: Colors.black,
+                              ),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      hintText: 'Password',
+                      prefixIcon: const Icon(
+                        Feather.lock,
+                        size: 24,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.only(
+                      right: 10.0, left: 10.0, bottom: 10.0, top: 5.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: () {},
+                        child: const Text(
+                          'Forgot Password ?',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // BUTTON
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.black,
+                    ),
+                    height: 50.0,
+                    width: 150.0,
+                    child: Center(
+                      child: TextButton(
+                        onPressed: signIn,
+                        child: Center(
+                          child: isLoading
+                              ? const SizedBox(
+                                  height: 20.0,
+                                  width: 20.0,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
                                   ),
-                          ),
+                                )
+                              : const Text(
+                                  'Login',
+                                  style: TextStyle(color: Colors.white),
+                                ),
                         ),
                       ),
                     ),
                   ),
-                ]),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -235,7 +241,7 @@ class _loginPageState extends State<loginPage> {
 
 String? validateEmail(String? formEmail) {
   if (formEmail == null || formEmail.isEmpty) {
-    return 'Email e di isi sek cok';
+    return 'Silahkan isi email terlebih dahulu';
 
     return null;
   }
@@ -243,7 +249,7 @@ String? validateEmail(String? formEmail) {
 
 String? validatePassword(String? formPassword) {
   if (formPassword == null || formPassword.isEmpty) {
-    return 'password e di isi sek cok';
+    return 'Silahkan isi password terlebih dahulu';
     return null;
     // } else if (formPassword == 'wrong-password') {
     //   return 'password e seng bener cok';
