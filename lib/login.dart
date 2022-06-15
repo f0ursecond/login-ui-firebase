@@ -125,15 +125,16 @@ class _loginPageState extends State<loginPage> {
               children: [
                 Center(
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 10.0),
+                    padding: const EdgeInsets.only(right: 32.0),
                     child: Container(
-                        height: 400,
-                        width: 400,
-                        child: Lottie.asset('assets/animations/welcome.json')),
+                      height: 400,
+                      width: 400,
+                      child: Lottie.asset('assets/animations/welcome.json'),
+                    ),
                   ),
                 ),
                 const SizedBox(
-                  height: 50.0,
+                  height: 10.0,
                 ),
 
                 // Textfield Nis
