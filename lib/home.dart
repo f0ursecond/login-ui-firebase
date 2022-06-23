@@ -10,7 +10,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 
-import '../main.dart';
+import 'main.dart';
 import 'package:flutter/material.dart';
 
 class homepage extends StatefulWidget {
@@ -21,15 +21,12 @@ class homepage extends StatefulWidget {
 }
 
 class _homepageState extends State<homepage> {
-  final user = FirebaseAuth.instance.currentUser!;
-
-  bool isLoading = false;
   int _currentIndex = 0;
 
   List<Widget> screen = [
-    viewPage(),
-    absenPage(),
-    settingsPage(),
+    const viewPage(),
+    const absenPage(),
+    const settingsPage(),
   ];
 
   void _changeItem(int index) {

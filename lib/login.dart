@@ -277,8 +277,5 @@ String? validatePassword(String? formPassword) {
   if (formPassword == null || formPassword.isEmpty) {
     return 'Silahkan isi password terlebih dahulu';
     return null;
-    // } else if (formPassword == 'wrong-password') {
-    //   return 'password e seng bener cok';
-    //   return null;
   }
 }

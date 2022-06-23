@@ -1,5 +1,5 @@
 import 'package:absensi/page/absen.dart';
-import 'package:absensi/page/home.dart';
+import 'package:absensi/home.dart';
 import 'package:absensi/login.dart';
 import 'package:absensi/page/settings.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,9 +25,9 @@ class _mainPageState extends State<mainPage> {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return homepage();
+            return const homepage();
           } else {
-            return loginPage();
+            return const loginPage();
           }
         },
       ),

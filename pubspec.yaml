@@ -44,6 +44,7 @@ dependencies:
   firebase_auth: ^3.3.19
   top_snackbar_flutter: ^1.1.1
   floating_bottom_navigation_bar: ^1.5.2
+  google_fonts: ^3.0.1
 
 dev_dependencies:
   flutter_test:
