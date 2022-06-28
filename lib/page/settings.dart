@@ -6,8 +6,10 @@ import 'package:absensi/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../main.dart';
 import 'package:flutter/material.dart';
@@ -25,10 +27,11 @@ class _settingsPageState extends State<settingsPage> {
   bool isLoading = false;
 
   final List pengaturan = [
-    'Privacy',
+    'Privacy Policy',
     'Change Profile Picture',
     'About this App',
     'Rating',
+    'Term & Condition',
   ];
 
   @override
@@ -46,7 +49,7 @@ class _settingsPageState extends State<settingsPage> {
                 //   bottomRight: Radius.elliptical(200, 40),
                 // ),
               ),
-              height: 200,
+              height: 18.h,
               child: Align(
                 alignment: Alignment.center,
                 child: Text(
@@ -62,43 +65,54 @@ class _settingsPageState extends State<settingsPage> {
             Transform(
               transform: Matrix4.translationValues(0, -35, 0),
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(60, 0, 60, 0),
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.grey[100],
+                    color: Colors.grey[300],
                   ),
-                  height: 100,
+                  height: 14.h,
+                  width: 80.w,
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
-                    child: Column(children: [
-                      Row(
-                        children: [
-                          const CircleAvatar(
-                            child: Text('XX'),
-                            minRadius: 30,
-                          ),
-                          const VerticalDivider(),
-                          Transform(
-                            transform: Matrix4.translationValues(10, 8, 0),
-                            child: Container(
-                              // color: Colors.white,
-                              height: 80,
-                              width: 270,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Nama: ${user.displayName}'),
-                                  Text('Email : ${user.email!}'),
-                                  Text('Kelas : ${user.phoneNumber}')
-                                ],
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(10.0),
+                              child: CircleAvatar(
+                                child: Text('XX'),
+                                minRadius: 8.w,
                               ),
                             ),
-                          )
-                        ],
-                      )
-                    ]),
+                            // const VerticalDivider(),
+                            Container(
+                              width: 55.w,
+                              height: 10.h,
+                              // color: Colors.white,
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Nama: ' + user.displayName!,
+                                    ),
+                                    Text('Email: ' + user.email!),
+                                    Text('Kelas:' + user.phoneNumber!),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -111,7 +125,7 @@ class _settingsPageState extends State<settingsPage> {
               ),
             ),
             Container(
-              height: 200,
+              height: 32.h,
               child: ListView.builder(
                 itemCount: pengaturan.length,
                 itemBuilder: (context, index) {
@@ -124,15 +138,14 @@ class _settingsPageState extends State<settingsPage> {
                 },
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            const Divider(),
             Text(
               'App Version V2.0',
-              style: GoogleFonts.roboto(fontSize: 12, color: Colors.grey[500]),
+              style:
+                  GoogleFonts.roboto(fontSize: 15.sp, color: Colors.grey[500]),
             ),
-            const SizedBox(
-              height: 20,
+            SizedBox(
+              height: 1.h,
             ),
             Container(
               decoration: BoxDecoration(
@@ -143,7 +156,10 @@ class _settingsPageState extends State<settingsPage> {
                 children: [
                   TextButton(
                     onPressed: () {
-                      showDialog(
+                      showAnimatedDialog(
+                          animationType: DialogTransitionType.slideFromTop,
+                          curve: Curves.fastOutSlowIn,
+                          duration: const Duration(seconds: 1),
                           context: context,
                           builder: (context) {
                             return AlertDialog(
