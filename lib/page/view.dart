@@ -9,6 +9,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../main.dart';
 import 'package:flutter/material.dart';
@@ -36,13 +38,29 @@ class _viewPageState extends State<viewPage> {
         ),
       ),
       body: SafeArea(
-        child: Row(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Column(
-              children: [
-                Text('CRUD'),
-              ],
-            )
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Made With'),
+                  Container(
+                    // color: Colors.yellow,
+                    height: 60,
+                    width: 60,
+                    child: Center(
+                      child: Lottie.asset(
+                        'assets/animations/love.json',
+                      ),
+                    ),
+                  ),
+                  Text('By Alif Zulfanur')
+                ],
+              ),
+            ),
           ],
         ),
       ),

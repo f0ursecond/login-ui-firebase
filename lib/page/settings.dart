@@ -101,10 +101,10 @@ class _settingsPageState extends State<settingsPage> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Nama: ' + user.displayName!,
+                                      'Nama: Rizal Ahmad Maulana',
                                     ),
                                     Text('Email: ' + user.email!),
-                                    Text('Kelas:' + user.phoneNumber!),
+                                    Text('Kelas: XII RPL'),
                                   ],
                                 ),
                               ),
@@ -125,7 +125,7 @@ class _settingsPageState extends State<settingsPage> {
               ),
             ),
             Container(
-              height: 32.h,
+              height: 23.5.h,
               child: ListView.builder(
                 itemCount: pengaturan.length,
                 itemBuilder: (context, index) {
@@ -138,11 +138,17 @@ class _settingsPageState extends State<settingsPage> {
                 },
               ),
             ),
-            const Divider(),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Divider(
+                color: Colors.black,
+                thickness: 1,
+              ),
+            ),
             Text(
               'App Version V2.0',
               style:
-                  GoogleFonts.roboto(fontSize: 15.sp, color: Colors.grey[500]),
+                  GoogleFonts.roboto(fontSize: 12.sp, color: Colors.grey[500]),
             ),
             SizedBox(
               height: 1.h,
