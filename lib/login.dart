@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'main.dart';
@@ -76,12 +77,12 @@ class _loginPageState extends State<loginPage> {
         return showTopSnackBar(
           context,
           const CustomSnackBar.error(
-            message: "Login Gagal, Silahkan hubungi petugas",
+            message: "Login Gagal, Silahkan hubungi petugas / coba lagi nanti",
             textStyle: TextStyle(color: Colors.white),
           ),
         );
 
-        //ketika email tidak terdaftar
+        //if email not registered
 
       } else if (e.code == 'user-not-found') {
         Future.delayed(
@@ -128,8 +129,8 @@ class _loginPageState extends State<loginPage> {
                   child: Padding(
                     padding: const EdgeInsets.only(right: 32.0),
                     child: Container(
-                      height: 400,
-                      width: 400,
+                      height: 40.h,
+                      width: 200.w,
                       child: Lottie.asset('assets/animations/welcome.json'),
                     ),
                   ),
@@ -150,7 +151,7 @@ class _loginPageState extends State<loginPage> {
                               style: GoogleFonts.hind(
                                 letterSpacing: 1,
                                 color: Colors.black,
-                                fontSize: 20,
+                                fontSize: 20.sp,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -158,7 +159,7 @@ class _loginPageState extends State<loginPage> {
                               'Please enter your email & password',
                               style: GoogleFonts.hind(
                                 color: Colors.grey[600],
-                                fontSize: 15,
+                                fontSize: 15.sp,
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
@@ -187,9 +188,9 @@ class _loginPageState extends State<loginPage> {
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       hintText: 'Email',
-                      prefixIcon: const Icon(
+                      prefixIcon: Icon(
                         Ionicons.mail_open_outline,
-                        size: 25,
+                        size: 20.sp,
                         color: Colors.black,
                       ),
                     ),
@@ -231,9 +232,9 @@ class _loginPageState extends State<loginPage> {
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       hintText: 'Password',
-                      prefixIcon: const Icon(
+                      prefixIcon: Icon(
                         Feather.lock,
-                        size: 24,
+                        size: 20.sp,
                         color: Colors.black,
                       ),
                     ),
@@ -265,8 +266,8 @@ class _loginPageState extends State<loginPage> {
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.black,
                     ),
-                    height: 50.0,
-                    width: 150.0,
+                    height: 6.h,
+                    width: 25.w,
                     child: Center(
                       child: TextButton(
                         onPressed: signIn,
@@ -286,6 +287,18 @@ class _loginPageState extends State<loginPage> {
                         ),
                       ),
                     ),
+                  ),
+                ),
+
+                // Register
+                Transform(
+                  transform: Matrix4.translationValues(0, -10, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Don\'t have an account?'),
+                      TextButton(onPressed: () {}, child: Text('Register')),
+                    ],
                   ),
                 ),
               ],
