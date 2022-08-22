@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:absensi/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -297,7 +298,14 @@ class _loginPageState extends State<loginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text('Don\'t have an account?'),
-                      TextButton(onPressed: () {}, child: Text('Register')),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: ((context) => Register())));
+                          },
+                          child: Text('Register')),
                     ],
                   ),
                 ),
