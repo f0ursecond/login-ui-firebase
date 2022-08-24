@@ -24,6 +24,10 @@ class _RegisterState extends State<Register> {
   bool obsecureText = true;
   bool isLoading = false;
 
+  final _nameController = TextEditingController();
+  final _emailcontroller = TextEditingController();
+  final _passcontroller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,7 +81,7 @@ class _RegisterState extends State<Register> {
               padding: const EdgeInsets.all(10.0),
               child: TextFormField(
                 // validator: validateEmail,
-                // controller: _emailcontroller,
+                controller: _nameController,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
@@ -101,7 +105,7 @@ class _RegisterState extends State<Register> {
               padding: const EdgeInsets.all(10.0),
               child: TextFormField(
                 // validator: validateEmail,
-                // controller: _emailcontroller,
+                controller: _emailcontroller,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
@@ -125,7 +129,7 @@ class _RegisterState extends State<Register> {
               padding: const EdgeInsets.all(10.0),
               child: TextFormField(
                 // validator: validatePassword,
-                // controller: _passcontroller,
+                controller: _passcontroller,
                 obscureText: obsecureText,
                 keyboardType: TextInputType.visiblePassword,
                 decoration: InputDecoration(
@@ -199,15 +203,16 @@ class _RegisterState extends State<Register> {
                 children: [
                   Text('Have an account?'),
                   TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: ((context) => loginPage())));
-                      },
-                      child: Text(
-                        'Login',
-                      )),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) => const loginPage())));
+                    },
+                    child: Text(
+                      'Login',
+                    ),
+                  ),
                 ],
               ),
             ),
