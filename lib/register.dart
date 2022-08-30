@@ -23,10 +23,34 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   bool obsecureText = true;
   bool isLoading = false;
-
+  final GlobalKey<FormState> _key = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailcontroller = TextEditingController();
   final _passcontroller = TextEditingController();
+
+  Future signUp() async {
+    try {
+      setState(() => isLoading = true);
+      if (_key.currentState!.validate()) {
+        FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: _emailcontroller.text.trim(),
+            password: _passcontroller.text.trim());
+      } else {
+        setState(() {
+          Future.delayed(const Duration(seconds: 1), () {
+            setState(() => isLoading = false);
+          });
+        });
+      }
+    } on FirebaseAuthException catch (e) {
+      print('Failed with error code: ${e.code}');
+      print(e.message);
+
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,30 +99,6 @@ class _RegisterState extends State<Register> {
                     ),
                   ),
                 ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: TextFormField(
-                // validator: validateEmail,
-                controller: _nameController,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                    borderSide: const BorderSide(
-                        color: Color.fromARGB(255, 5, 5, 5), width: 2.0),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  hintText: 'Nama',
-                  prefixIcon: Icon(
-                    Ionicons.person_outline,
-                    size: 20.sp,
-                    color: Colors.black,
-                  ),
-                ),
               ),
             ),
             Padding(
@@ -177,7 +177,9 @@ class _RegisterState extends State<Register> {
                 width: 25.w,
                 child: Center(
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      signUp();
+                    },
                     child: Center(
                       child: isLoading
                           ? const SizedBox(
@@ -188,7 +190,7 @@ class _RegisterState extends State<Register> {
                               ),
                             )
                           : const Text(
-                              'Login',
+                              'Register',
                               style: TextStyle(color: Colors.white),
                             ),
                     ),
@@ -209,7 +211,7 @@ class _RegisterState extends State<Register> {
                           MaterialPageRoute(
                               builder: ((context) => const loginPage())));
                     },
-                    child: Text(
+                    child: const Text(
                       'Login',
                     ),
                   ),

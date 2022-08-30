@@ -39,9 +39,9 @@ dependencies:
   flutter_svg: ^1.1.0
   flutter_vector_icons: ^1.0.0
   flutter_login: ^3.2.0
-  cloud_firestore: ^3.1.17
-  firebase_core: ^1.17.1
-  firebase_auth: ^3.3.19
+  cloud_firestore: ^3.4.6
+  firebase_core: ^1.21.1
+  firebase_auth: ^3.7.0
   top_snackbar_flutter: ^1.1.1
   floating_bottom_navigation_bar: ^1.5.2
   google_fonts: ^3.0.1

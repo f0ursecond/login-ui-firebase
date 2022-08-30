@@ -1,4 +1,5 @@
 import 'package:absensi/login.dart';
+import 'package:absensi/register.dart';
 import 'package:absensi/mainpage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
